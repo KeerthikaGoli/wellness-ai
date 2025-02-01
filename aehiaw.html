@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harika's Cosmic Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --space: #0a0e17;
+            --star: #ffffff;
+            --mercury: #A0522D;
+            --venus: #DEB887;
+            --earth: #4169E1;
+            --mars: #CD5C5C;
+            --jupiter: #DAA520;
+            --saturn: #F4A460;
+        }
+
+        body {
+            background: var(--space);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .solar-system {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .sun {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(#ffd700, #ff4500);
+            borderRadius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 50px #ff4500;
+            animation: pulse 4s infinite;
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .planet:hover {
+            transform: scale(1.2);
+        }
+
+        /* Planet Positions */
+        .mercury { width: 30px; height: 30px; background: var(--mercury); }
+        .venus { width: 45px; height: 45px; background: var(--venus); }
+        .earth { width: 50px; height: 50px; background: var(--earth); }
+        .mars { width: 40px; height: 40px; background: var(--mars); }
+        .jupiter { width: 80px; height: 80px; background: var(--jupiter); }
+        .saturn { width: 70px; height: 70px; background: var(--saturn); }
+
+        .info-panel {
+            position: fixed;
+            right: -400px;
+            top: 50px;
+            width: 350px;
+            background: rgba(0,0,0,0.9);
+            padding: 20px;
+            transition: right 0.5s;
+            border-left: 3px solid var(--star);
+        }
+
+        .stars {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Create dynamic star background */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="solar-system">
+        <!-- Sun - Profile -->
+        <div class="sun" onclick="showInfo('profile')">
+            <div class="sun-text">HARIKA</div>
+        </div>
+
+        <!-- Mercury - Education -->
+        <div class="orbit" style="width: 250px; height: 250px;">
+            <div class="planet mercury" onclick="showInfo('education')"></div>
+        </div>
+
+        <!-- Venus - Skills -->
+        <div class="orbit" style="width: 400px; height: 400px;">
+            <div class="planet venus" onclick="showInfo('skills')"></div>
+        </div>
+
+        <!-- Earth - Projects -->
+        <div class="orbit" style="width: 550px; height: 550px;">
+            <div class="planet earth" onclick="showInfo('projects')"></div>
+        </div>
+
+        <!-- Mars - Achievements -->
+        <div class="orbit" style="width: 700px; height: 700px;">
+            <div class="planet mars" onclick="showInfo('achievements')"></div>
+        </div>
+
+        <!-- Jupiter - Experience -->
+        <div class="orbit" style="width: 850px; height: 850px;">
+            <div class="planet jupiter" onclick="showInfo('experience')"></div>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="info-panel" id="infoPanel">
+            <h2 id="panelTitle">Profile</h2>
+            <div id="panelContent">
+                <!-- Content will be injected here -->
+            </div>
+            <button onclick="closePanel()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Create animated stars
+        function createStars() {
+            const stars = document.getElementById('stars');
+            for(let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 1.5 + 's';
+                stars.appendChild(star);
+            }
+        }
+
+        // Info panel controller
+        function showInfo(section) {
+            const content = {
+                profile: `<p>${document.querySelector('.sun-text').textContent}</p>
+                         <p>+918247459086 | harika.danduprolu740@gmail.com</p>
+                         <p>Committed to creating impactful technological solutions</p>`,
+                education: `<h3>VNR VJIET</h3>
+                           <p>B.Tech in CSE (2022-2026)</p>
+                           <p>Courses: DSA, ML, Blockchain, Web Dev</p>`,
+                skills: `<h3>Technical Arsenal</h3>
+                        <ul>
+                            <li>Python/JavaScript/C++</li>
+                            <li>MERN Stack</li>
+                            <li>Machine Learning</li>
+                            <li>Blockchain</li>
+                        </ul>`,
+                projects: `<h3>Cosmic Creations</h3>
+                          <p>BioBlock - Blockchain Platform</p>
+                          <p>Rural Aid - Community Development</p>
+                          <p>Fitness Tracking System</p>`,
+                achievements: `<h3>Stellar Achievements</h3>
+                              <p>3rd Place - KRITHOTHON 2.0</p>
+                              <p>3rd Place - DQ Code Fest</p>`,
+                experience: `<h3>Galactic Experience</h3>
+                            <p>GDG Coordinator</p>
+                            <p>Open Source Contributor</p>`
+            };
+            
+            document.getElementById('panelTitle').textContent = section.charAt(0).toUpperCase() + section.slice(1);
+            document.getElementById('panelContent').innerHTML = content[section];
+            document.getElementById('infoPanel').style.right = '0';
+        }
+
+        function closePanel() {
+            document.getElementById('infoPanel').style.right = '-400px';
+        }
+
+        // Initialize
+        createStars();
+        document.querySelectorAll('.orbit').forEach(orbit => {
+            orbit.style.animation = `orbit ${Math.random()*30 + 30}s linear infinite`;
+        });
+    </script>
+</body>
+</html>
