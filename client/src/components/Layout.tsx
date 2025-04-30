@@ -27,7 +27,7 @@ export default function Layout({ children }: LayoutProps) {
 
   const navItems = user ? [
     { name: 'Dashboard', href: '/dashboard' },
-    { name: 'AI Chat', href: '/chat' },
+    { name: 'AI Chat', href: '/dashboard', onClick: () => window.open('https://coruscating-selkie-8d7eba.netlify.app/', '_blank') }, // Open chatbot in new tab
     { name: 'Mood Tracker', href: '/mood' },
     { name: 'Journal', href: '/journal' },
     { name: 'Resources', href: '/resources' },
@@ -35,7 +35,6 @@ export default function Layout({ children }: LayoutProps) {
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
   ];
-
   return (
     <div className={`min-h-screen ${isDarkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
       <nav className="bg-white dark:bg-gray-800 shadow-lg">
@@ -45,15 +44,17 @@ export default function Layout({ children }: LayoutProps) {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-6">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  {item.name}
-                </Link>
-              ))}
+            {navItems.map((item) => (
+      <Link
+    key={item.name}
+    to={item.href}
+    onClick={item.onClick} // Add this line to handle custom click behavior
+    className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+  >
+    {item.name}
+  </Link>
+    ))}
+
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"

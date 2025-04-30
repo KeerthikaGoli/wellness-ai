@@ -15,4 +15,6 @@ export interface WeeklyData {
   chatCount: number;
   moodCounts: [string, number][]; // [mood, count]
   mentalHealthCounts: [string, number][]; // [condition, count]
+  startDate: string;
+  hasFullWeekData: boolean;
 }

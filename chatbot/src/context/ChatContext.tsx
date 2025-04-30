@@ -27,7 +27,9 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [weeklyData, setWeeklyData] = useState<WeeklyData>({
     chatCount: 0,
     moodCounts: [],
-    mentalHealthCounts: []
+    mentalHealthCounts: [],
+    startDate: new Date().toISOString(),
+    hasFullWeekData: false
   });
   
   // Load saved messages from localStorage on mount
@@ -42,7 +44,6 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
   
   const sendMessage = (content: string) => {
-    // Create user message without immediate analysis
     const userMessage: Message = {
       id: Date.now().toString(),
       content,
@@ -53,17 +54,22 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Get all user messages including the new one
     const userMessages = [...messages.filter(m => m.sender === 'user'), userMessage];
     
-    // Only analyze after 3 messages to establish better context
-    if (userMessages.length >= 3) {
-      const combinedContent = userMessages.map(m => m.content).join(' ');
-      const mentalHealth = analyzeMentalHealth(combinedContent);
-      const mood = analyzeMood(combinedContent);
+    // Check if we have a full week of data
+    const oldestMessage = userMessages[0];
+    if (oldestMessage) {
+      const daysSinceStart = (new Date().getTime() - new Date(oldestMessage.timestamp).getTime()) / (1000 * 60 * 60 * 24);
       
-      if (mentalHealth || mood) {
-        userMessage.analysis = {
-          mentalHealth,
-          mood
-        };
+      if (daysSinceStart >= 7) {
+        const combinedContent = userMessages.map(m => m.content).join(' ');
+        const mentalHealth = analyzeMentalHealth(combinedContent);
+        const mood = analyzeMood(combinedContent);
+        
+        if (mentalHealth || mood) {
+          userMessage.analysis = {
+            mentalHealth,
+            mood
+          };
+        }
       }
     }
     

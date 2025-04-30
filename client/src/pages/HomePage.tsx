@@ -1,10 +1,15 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import { Brain, MessageCircle, BarChart3, BookOpen, Heart } from 'lucide-react';
+import { MessageCircle, BarChart3, BookOpen, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
   const navigate = useNavigate();
+
+  const redirectToChatbot = () => {
+    window.open('https://coruscating-selkie-8d7eba.netlify.app/', '_blank'); // Open the chatbot in a new tab
+    navigate('/dashboard'); // Redirect to dashboard after opening the chatbot
+  };
 
   return (
     <Layout>
@@ -19,7 +24,7 @@ export default function HomePage() {
             Experience personalized AI-powered support, mood tracking, and journaling tools designed to help you understand and improve your mental well-being.
           </p>
           <button
-            onClick={() => navigate('/chat')}
+            onClick={redirectToChatbot}
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105"
           >
             Talk to AI Assistant
@@ -28,35 +33,34 @@ export default function HomePage() {
 
         {/* Features Grid */}
         <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            {
+          {[{ 
               icon: <MessageCircle className="w-8 h-8 text-indigo-600" />,
               title: "AI Chat Support",
               description: "24/7 empathetic conversation with our AI assistant",
-              path: "/chat"
+              onClick: redirectToChatbot
             },
             {
               icon: <BarChart3 className="w-8 h-8 text-indigo-600" />,
               title: "Mood Tracking",
               description: "Visual insights into your emotional patterns",
-              path: "/mood"
+              onClick: () => navigate('/mood')
             },
             {
               icon: <BookOpen className="w-8 h-8 text-indigo-600" />,
               title: "Smart Journaling",
               description: "AI-assisted journaling for better self-reflection",
-              path: "/journal"
+              onClick: () => navigate('/journal')
             },
             {
               icon: <Heart className="w-8 h-8 text-indigo-600" />,
               title: "Wellness Resources",
               description: "Curated content for mental health support",
-              path: "/resources"
+              onClick: () => navigate('/resources')
             }
           ].map((feature, index) => (
             <div
               key={index}
-              onClick={() => navigate(feature.path)}
+              onClick={feature.onClick}
               className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
             >
               <div className="space-y-4">
@@ -75,8 +79,7 @@ export default function HomePage() {
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Why Choose MindfulAI?</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { title: "Private & Secure", value: "End-to-end encryption" },
+              {[{ title: "Private & Secure", value: "End-to-end encryption" },
                 { title: "Always Available", value: "24/7 Support" },
                 { title: "Research Backed", value: "Evidence-based approach" }
               ].map((stat, index) => (
@@ -92,10 +95,12 @@ export default function HomePage() {
         {/* CTA Section */}
         <section className="text-center space-y-6">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Ready to Start Your Journey?</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300">Join thousands of others who have taken the first step towards better mental health.</p>
+          <p className="text-xl text-gray-600 dark:text-gray-300">
+            Join thousands of others who have taken the first step towards better mental health.
+          </p>
           <div className="space-x-4">
             <button
-              onClick={() => navigate('/chat')}
+              onClick={redirectToChatbot}
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105"
             >
               Start Now
